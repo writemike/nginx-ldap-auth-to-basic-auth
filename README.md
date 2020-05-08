@@ -32,4 +32,16 @@ CONTAINER ID        IMAGE                                     COMMAND           
 b62eceea65d5        writemike/nginx-ldap-auth-daemon:python   "python -u /usr/src/…"   16 seconds ago      Up 15 seconds       127.0.0.1:8888->8888/tcp           ldap_auth_daemon
 fbe63e5dc44a        writemike/openldap:withdata               "/container/tool/run"    16 seconds ago      Up 15 seconds       0.0.0.0:389->389/tcp, 636/tcp      ldap_server
 a5c17f7a8171        nginx:stable                              "nginx -g 'daemon of…"   16 seconds ago      Up 15 seconds       80/tcp, 127.0.0.1:8082->8082/tcp   nginx-ldap-auth-to-basic-auth_nginxweb_1
-03591e506a13        nginx:stable                              "nginx -g 'daemon of…"   16 seconds ago      Up 15 seconds       80/tcp, 127.0.0.1:8081->8081/tcp   nginx-ldap-auth-to-basic-auth_nginx_1 ```
+03591e506a13        nginx:stable                              "nginx -g 'daemon of…"   16 seconds ago      Up 15 seconds       80/tcp, 127.0.0.1:8081->8081/tcp   nginx-ldap-auth-to-basic-auth_nginx_1 
+```
+
+### Usage
+
+Using you favorite browser, go to:
+
+```shell
+http:/localhost:8081/
+```
+Authenticate using 
+* Username: user1
+* Password: password1
