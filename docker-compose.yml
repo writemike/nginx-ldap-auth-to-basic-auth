@@ -1,0 +1,47 @@
+version: '3.7'
+services:
+  ldap_server:
+    image: writemike/openldap:withdata
+    container_name: ldap_server
+    environment:
+      LDAP_ADMIN_PASSWORD: "test1234"
+      LDAP_BASE_DN: "dc=lab,dc=local"
+    ports:
+      - 389:389
+    volumes:
+      - ldap_data:/var/lib/ldap
+      - ldap_config:/etc/ldap/slapd.d
+  ldap_server_admin:
+    image: osixia/phpldapadmin:0.7.2
+    ports:
+      - 8090:80
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "ldap_server"
+      PHPLDAPADMIN_HTTPS: "false"
+  ldap_auth_daemon:
+    image: writemike/nginx-ldap-auth-daemon:python
+    container_name: ldap_auth_daemon
+    ports:
+      - 127.0.0.1:8888:8888
+  backend_app:
+    image: writemike/backend-sample-app:python
+    container_name: backend_app
+    ports:
+      - 127.0.0.1:9000:9000    
+  nginx:
+    image: nginx:stable
+    ports:
+      - 127.0.0.1:8081:8081
+    environment:
+      NGINX_BACKEND_APP: "backend_app:9000"
+      NGINX_LDAP_AUTH_DAEMON: "ldap_auth_daemon:8888"
+      NGINX_AUTH_LDAP_URL: "ldap://ldap_server:389/dc=lab,dc=local?sAMAccountName?sub?(objectClass=person)"
+      NGINX_AUTH_LDAP_BASEDN: "dc=lab,dc=local"
+      NGINX_AUTH_LDAP_BINDDN: "cn=admin,dc=lab,dc=local"
+      NGINX_AUTH_LDAP_BINDPW: "test1234"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+volumes:
+  ldap_data:
+  ldap_config:
+  
