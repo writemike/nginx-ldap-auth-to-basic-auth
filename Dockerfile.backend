@@ -1,0 +1,10 @@
+ARG PYTHON_VERSION=3
+FROM python:${PYTHON_VERSION}-alpine
+
+COPY backend-sample-app.py /usr/src/app/
+
+WORKDIR /usr/src/app/
+
+EXPOSE 9000
+
+CMD ["python3", "-u", "/usr/src/app/backend-sample-app.py", "--host", "0.0.0.0", "--port", "9000"]
