@@ -28,6 +28,12 @@ services:
     container_name: backend_app
     ports:
       - 127.0.0.1:9000:9000    
+  nginxweb:
+    image: nginx:stable
+    ports:
+      - 127.0.0.1:8082:8082
+    volumes:
+      - ./nginx-test-website-basicauth:/etc/nginx/conf.d
   nginx:
     image: nginx:stable
     ports:
